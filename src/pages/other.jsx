@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import Content from "../src/components/Content";
-import { addCount } from "../store/count/action";
-import { wrapper } from "../store/store";
-import { serverRenderClock, startClock } from "../store/tick/action";
+import Content from "components/Content";
+import { addCount } from "store/count/action";
+import { wrapper } from "store/store";
+import { serverRenderClock, startClock } from "store/tick/action";
 
 const Other = (props) => {
   useEffect(() => {

@@ -1,5 +1,5 @@
 import { createGlobalStyle, ThemeProvider } from "styled-components";
-import { wrapper } from "../store/store";
+import { wrapper } from "store/store";
 
 const GlobalStyle = createGlobalStyle`
   body {
