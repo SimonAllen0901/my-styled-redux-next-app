@@ -1,6 +1,11 @@
-import { useSelector } from "react-redux";
-import Link from "next/link";
+import { useEffect } from "react";
+import { useSelector, connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import Content from "../src/components/Content";
+import { addCount } from "../store/count/action";
+import { wrapper } from "../store/store";
+import { serverRenderClock, startClock } from "../store/tick/action";
+import Link from "next/link";
 
 const codeStyle = {
   background: "#ebebeb",
@@ -10,8 +15,16 @@ const codeStyle = {
   marginBottom: 10,
 };
 
-const ShowReduxState = () => {
+const ShowReduxState = (props) => {
   const state = useSelector((state) => state);
+
+  useEffect(() => {
+    const timer = props.startClock();
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, [props]);
 
   return (
     <>
@@ -26,4 +39,18 @@ const ShowReduxState = () => {
   );
 };
 
-export default ShowReduxState;
+export const getServerSideProps = wrapper.getServerSideProps(
+  async ({ store }) => {
+    store.dispatch(serverRenderClock(true));
+    store.dispatch(addCount());
+  }
+);
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addCount: bindActionCreators(addCount, dispatch),
+    startClock: bindActionCreators(startClock, dispatch),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(ShowReduxState);
